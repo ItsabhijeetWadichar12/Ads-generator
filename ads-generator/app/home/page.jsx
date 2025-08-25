@@ -96,12 +96,12 @@ export default function HomePage() {
 
         {/* Trust indicators */}
         <div className="mt-16 flex flex-col items-center animate-fade-in-up delay-800">
-          <p className="text-slate-400 text-sm mb-4 tracking-wide">TRUSTED BY 10,000+ MARKETERS</p>
+          {/* <p className="text-slate-400 text-sm mb-4 tracking-wide">TRUSTED BY 10,000+ MARKETERS</p> */}
           <div className="flex items-center space-x-8 opacity-60">
-            <div className="text-slate-400 font-semibold">Meta</div>
+            {/* <div className="text-slate-400 font-semibold">Meta</div>
             <div className="text-slate-400 font-semibold">Google</div>
             <div className="text-slate-400 font-semibold">TikTok</div>
-            <div className="text-slate-400 font-semibold">LinkedIn</div>
+            <div className="text-slate-400 font-semibold">LinkedIn</div> */}
           </div>
         </div>
       </section>
@@ -214,10 +214,10 @@ export default function HomePage() {
         {/* Stats section */}
         <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto animate-fade-in-up delay-1000">
           {[
-            { number: "10M+", label: "Ads Generated" },
-            { number: "500%", label: "Avg CTR Increase" },
-            { number: "99.9%", label: "Uptime SLA" },
-            { number: "24/7", label: "Expert Support" }
+            // { number: "10M+", label: "Ads Generated" },
+            // { number: "500%", label: "Avg CTR Increase" },
+            // { number: "99.9%", label: "Uptime SLA" },
+            // { number: "24/7", label: "Expert Support" }
           ].map((stat, i) => (
             <div key={i} className="text-center group">
               <div className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 mb-2 group-hover:scale-110 transition-transform duration-300">
@@ -290,8 +290,8 @@ export default function HomePage() {
                 ))}
               </div>
               <div className="text-left">
-                <div className="text-2xl font-bold text-white">4.9/5</div>
-                <div className="text-slate-400 text-sm">from 10,000+ reviews</div>
+                {/* <div className="text-2xl font-bold text-white">4.9/5</div> */}
+                {/* <div className="text-slate-400 text-sm">from 10,000+ reviews</div> */}
               </div>
             </div>
             <p className="text-slate-400 text-lg italic">
