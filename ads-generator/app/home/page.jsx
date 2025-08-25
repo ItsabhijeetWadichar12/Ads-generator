@@ -310,9 +310,9 @@ export default function HomePage() {
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center mb-6">
                 <div className="w-10 h-10 bg-gradient-to-r from-cyan-400 to-blue-600 rounded-xl mr-3 flex items-center justify-center">
-                  <span className="text-white font-bold text-xl">A</span>
+                  <span className="text-white font-bold text-xl">P</span>
                 </div>
-                <span className="text-2xl font-black text-white">AI Ads Generator</span>
+                <span className="text-2xl font-black text-white">PromoBot</span>
               </div>
               <p className="text-slate-400 text-lg leading-relaxed max-w-md mb-6">
                 The future of advertising is here. Create, optimize, and scale your campaigns with the power of artificial intelligence.
@@ -353,7 +353,7 @@ export default function HomePage() {
           {/* Bottom footer */}
           <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-slate-500 text-sm">
-              © {new Date().getFullYear()} AI Ads Generator. All rights reserved.
+              © {new Date().getFullYear()} PromoBot. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="text-slate-500 hover:text-slate-300 text-sm transition-colors">Privacy Policy</a>
