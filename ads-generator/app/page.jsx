@@ -1,13 +1,16 @@
-import { Button } from '@/components/ui/button'
-import React from 'react'
+
+import React from "react";
+import HomePage from "./home/page";
+import Navbar from "./[navbar]/page";
 
 function page() {
   return (
     <div>
-      <h2 className='text-2xl text-red-400'>Hello!</h2>
-      <Button className="ml-5">Save</Button>
+      <Navbar/>
+      <HomePage />
+
     </div>
-  )
+  );
 }
 
-export default page
+export default page;
