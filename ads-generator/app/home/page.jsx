@@ -84,14 +84,14 @@ export default function HomePage() {
             </div>
           </button>
 
-          <button className="group relative bg-slate-800/50 backdrop-blur-xl border border-slate-600/50 text-slate-200 font-semibold px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-slate-700/50 hover:border-slate-500 hover:scale-105">
+          {/* <button className="group relative bg-slate-800/50 backdrop-blur-xl border border-slate-600/50 text-slate-200 font-semibold px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-slate-700/50 hover:border-slate-500 hover:scale-105">
             <span className="flex items-center text-lg">
               <svg className="w-6 h-6 mr-3 group-hover:animate-pulse" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"/>
               </svg>
               Watch Demo
             </span>
-          </button>
+          </button> */}
         </div>
 
         {/* Trust indicators */}
@@ -130,30 +130,30 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full max-w-7xl">
             {[
               {
-                title: "Neural Copywriting",
-                desc: "Advanced AI algorithms analyze your brand voice and generate compelling copy that converts.",
-                icon: "🧠",
+                title: "Realistic voice-overs",
+                desc: "Convert text into natural speech .",
+                icon: "🔊",
                 backIcon: "⚡",
                 backTitle: "AI-Powered Engine",
-                backDesc: "Leveraging GPT-4 and custom models trained on millions of high-converting ads",
+                backDesc: "Convert text into natural speech",
                 gradient: "from-cyan-500 to-blue-600"
               },
               {
-                title: "Creative Variations",
-                desc: "Generate infinite ad variations and A/B test your way to maximum performance.",
-                icon: "🎨",
+                title: "Smart Ads Creation",
+                desc: "Instantly generate ad scripts, voice-overs, and visuals powered by AI.",
+                  icon: "💡",
                 backIcon: "�",
                 backTitle: "Performance Optimization",
-                backDesc: "Built-in analytics help you identify winning creatives and scale what works",
+                backDesc: "Instantly generate ad scripts, voice-overs, and visuals powered by AI",
                 gradient: "from-purple-500 to-pink-600"
               },
               {
-                title: "Omnichannel Export",
-                desc: "One-click deployment to Google, Meta, TikTok, LinkedIn, and 50+ platforms.",
-                icon: "🚀",
-                backIcon: "🌐",
+                title: "AI Avatars",
+                desc: "Bring ads to life with avatars that speaks.",
+                icon: "🤖",
+                backIcon: "🤖",
                 backTitle: "Universal Integration",
-                backDesc: "Native integrations with all major ad platforms for seamless campaign management",
+                backDesc: "Bring ads to life with avatars that speaks.",
                 gradient: "from-blue-500 to-purple-600"
               },
             ].map((f, i) => (

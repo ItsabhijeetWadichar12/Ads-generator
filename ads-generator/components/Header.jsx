@@ -19,6 +19,7 @@ function Header() {
           <a href="/features" className="text-slate-200 font-medium hover:text-cyan-400 transition-colors duration-300">Features</a>
           <a href="/pricing" className="text-slate-200 font-medium hover:text-cyan-400 transition-colors duration-300">Pricing</a>
           <a href="/dashboard" className="text-slate-200 font-medium hover:text-cyan-400 transition-colors duration-300">Dashboard</a>
+          <a href="/about" className="text-slate-200 font-medium hover:text-cyan-400 transition-colors duration-300">About us </a>
         </div>
 
         {/* Clerk User Button */}
