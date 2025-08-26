@@ -14,9 +14,9 @@ function AboutPage() {
           <h2 className="text-2xl font-bold text-cyan-400 mb-2">Why PromoBot?</h2>
           <ul className="text-slate-200 text-left list-disc list-inside mx-auto max-w-xl">
             <li>Instantly generate compelling ad copy and creative variations using AI.</li>
-            <li>Export campaigns directly to Google, Meta, TikTok, LinkedIn, and more.</li>
+            {/* <li>Export campaigns directly to Google, Meta, TikTok, LinkedIn, and more.</li> */}
             <li>Save time, boost engagement, and grow your brand with data-driven insights.</li>
-            <li>Trusted by thousands of marketers and businesses worldwide.</li>
+            {/* <li>Trusted by thousands of marketers and businesses worldwide.</li> */}
           </ul>
         </div>
         <div className="mt-8">
