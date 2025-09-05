@@ -6,6 +6,7 @@ export default function Layout({ children }) {
     <SidebarProvider>
       <AppSidebar />
       <main>
+        <div className="w-full p-10"></div>
         <SidebarTrigger />
         {children}
       </main>
