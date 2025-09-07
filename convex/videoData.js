@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 
 export const CreateNewVideoData = mutation({
   args: {
@@ -14,5 +14,16 @@ export const CreateNewVideoData = mutation({
       scriptVariant: args.scriptVariant
     })
     return result; // Record ID
+  }
+})
+
+
+export const GetVideoDataById = query({
+  args: {
+    vid:v.id('videoData')
+  },
+  handler:async(ctx,args)=>{
+    const result=await ctx.db.get(args.vid);
+    return result;
   }
 })

@@ -1,13 +1,11 @@
 "use client"
 
-
-
 import { UserDetailContext } from "@/context/UserDetailContext";
 import { api } from "@/convex/_generated/api";
 import axios from "axios";
 import { useMutation } from "convex/react";
 import { LoaderCircle, Sparkles } from "lucide-react";
-
+import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
 
 
@@ -15,7 +13,7 @@ function CreateAdd() {
     const [userInput, setUserInput] = useState();
     const [loading, setLoading] = useState(false);
     const { userDetails } = useContext(UserDetailContext);
-
+    const router=useRouter();
     const CreateNewVideoData = useMutation(api.videoData.CreateNewVideoData)
     const GenerateAiVideoScript = async () => {
         // Function to generate AI video script
@@ -25,15 +23,24 @@ function CreateAdd() {
         });
         console.log(result.data);
         const RAWResult = (result?.data).replace('```json', '').replace('```', '');
-        const JSONResult = JSON.parse(RAWResult);
-        const resp = await CreateNewVideoData({
-            uid: userDetails?._id,
-            topic: userInput,
-            scriptVariant: JSONResult
-        });
-        console.log(resp);
-        //redirect user to new route
-        setLoading(false);
+        try {
+            const JSONResult = JSON.parse(RAWResult);
+            const resp = await CreateNewVideoData({
+                uid: userDetails?._id,
+                topic: userInput,
+                scriptVariant: JSONResult
+            });
+            console.log(resp);
+            setLoading(false);
+            //redirect user to new route
+            
+            router.push('/workspace/create-ad/'+ resp);
+        } catch (error) {
+            console.error("Error parsing JSON:", error);
+            console.error("Problematic string:", RAWResult);
+            setLoading(false);
+        }
+        
     }
     return (
         <div className="min-h-full w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center p-8">
