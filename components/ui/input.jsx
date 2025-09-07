@@ -9,6 +9,7 @@ function Input({
 }) {
   return (
     <input
+      suppressHydrationWarning={true}
       type={type}
       data-slot="input"
       className={cn(
