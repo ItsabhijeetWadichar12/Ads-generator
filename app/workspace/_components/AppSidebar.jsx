@@ -53,28 +53,20 @@ const SETTINGS_MENU_ITEM = {
 export function AppSidebar() {
     const pathname = usePathname();
 
-    // Corrected for JavaScript: Removed the `: string` type annotation
     const isActive = (path) => {
-        // The dashboard link is only active on the exact path.
-        // Other links are active if the current path starts with their path.
-        return path === '/workspace'
-            ? pathname === path
-            : pathname.startsWith(path);
+        // Ensure the check is robust for nested paths
+        if (path === '/workspace' && pathname !== '/workspace') {
+            return false;
+        }
+        return pathname.startsWith(path);
     }
-
+    
     return (
-        <Sidebar className="flex flex-col h-screen border-r border-slate-700/30 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-            {/* Decorative background elements */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-full bg-grid-white/[0.02] bg-[size:50px_50px]" />
-                <div className="absolute -top-20 -left-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
-                <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl" />
-            </div>
-
-            <SidebarHeader className="relative p-6">
+        <Sidebar>
+            <SidebarHeader className="p-6">
                 <Link href="/" className="flex items-center gap-3 group">
                     <div className="relative overflow-hidden rounded-xl">
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 animate-gradient" />
+                         <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 animate-gradient" />
                         <Image
                             src="/logo.svg"
                             alt="logo"
@@ -89,15 +81,15 @@ export function AppSidebar() {
                 </Link>
             </SidebarHeader>
 
-            <Separator className="bg-white/[0.08]" />
+            <Separator className="bg-white/[0.1]" />
 
-            <SidebarContent className="flex-1 overflow-y-auto p-4 space-y-8 relative">
+            <SidebarContent className="flex-1 overflow-y-auto p-4 space-y-8">
                 <div className="relative group">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg opacity-70 blur group-hover:opacity-100 transition duration-500" />
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg opacity-60 blur group-hover:opacity-80 transition duration-300" />
                     <Button
                         asChild
                         size="lg"
-                        className="relative w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white border-0 hover:opacity-90 backdrop-blur-sm"
+                        className="relative w-full bg-gradient-to-r from-blue-500/90 to-purple-600/90 text-white border-0 hover:opacity-95 backdrop-blur-sm"
                     >
                         <Link href="/workspace/create-ad" className="flex items-center justify-center gap-2">
                             <PlusCircle className="h-5 w-5" />
@@ -113,18 +105,18 @@ export function AppSidebar() {
                                 <Link
                                     href={menu.path}
                                     className={clsx(
-                                        "flex items-center gap-3 rounded-lg px-4 py-3 transition-all duration-300",
-                                        "hover:bg-white/[0.08] hover:backdrop-blur-sm",
+                                        "flex items-center gap-3 rounded-lg px-4 py-3 transition-all duration-300 group",
+                                        "hover:bg-black/10", // Subtle hover for all items
                                         {
-                                            "bg-white/[0.08] backdrop-blur-sm border border-white/[0.08] shadow-lg": isActive(menu.path),
-                                            "text-slate-300 hover:text-white": !isActive(menu.path),
-                                            "text-blue-400 font-medium": isActive(menu.path),
+                                            "bg-slate-900/50 shadow-inner": isActive(menu.path), // Darker, inset background for active item
+                                            "text-slate-300 hover:text-white": !isActive(menu.path), // Default text color
+                                            "text-purple-300 font-semibold": isActive(menu.path), // Active text color
                                         }
                                     )}
                                 >
                                     <menu.icon className={clsx(
                                         "h-5 w-5 transition-colors",
-                                        isActive(menu.path) ? "text-blue-400" : "text-slate-400"
+                                        isActive(menu.path) ? "text-purple-300" : "text-slate-400 group-hover:text-slate-200" // Active icon color
                                     )} />
                                     <span className="font-medium">{menu.title}</span>
                                 </Link>
@@ -134,25 +126,24 @@ export function AppSidebar() {
                 </SidebarGroup>
             </SidebarContent>
 
-            <Separator className="bg-white/[0.08]" />
+            <Separator className="bg-white/[0.1]" />
 
             <SidebarFooter className="p-4">
-                <Link
+                 <Link
                     href={SETTINGS_MENU_ITEM.path}
                     className={clsx(
-                        "flex items-center gap-3 rounded-lg px-4 py-3 transition-all duration-300",
-                        "hover:bg-white/[0.08] hover:backdrop-blur-sm",
+                        "flex items-center gap-3 rounded-lg px-4 py-3 transition-all duration-300 group",
+                        "hover:bg-black/10",
                         {
-                            "bg-white/[0.08] backdrop-blur-sm border border-white/[0.08]": isActive(SETTINGS_MENU_ITEM.path),
+                            "bg-slate-900/50 shadow-inner": isActive(SETTINGS_MENU_ITEM.path),
                             "text-slate-300 hover:text-white": !isActive(SETTINGS_MENU_ITEM.path),
-                            "text-blue-400 font-medium": isActive(SETTINGS_MENU_ITEM.path),
+                            "text-purple-300 font-semibold": isActive(SETTINGS_MENU_ITEM.path),
                         }
                     )}
                 >
-                    <SETTINGS_MENU_ITEM.icon className={clsx(
-                        "h-5 w-5 transition-colors",
-                        isActive(SETTINGS_MENU_ITEM.path) ? "text-blue-400" : "text-slate-400"
-                    )} />
+                     <div className="flex items-center justify-center h-8 w-8 bg-slate-800 rounded-full text-white font-bold text-sm">
+                        N
+                    </div>
                     <span className="font-medium">{SETTINGS_MENU_ITEM.title}</span>
                 </Link>
             </SidebarFooter>
