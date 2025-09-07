@@ -13,28 +13,90 @@ import React, { useContext, useState } from "react";
 
 function CreateAdd() {
     const [userInput, setUserInput] = useState();
+    const [language, setLanguage] = useState('English');
     const [loading, setLoading] = useState(false);
     const { userDetails } = useContext(UserDetailContext);
 
     const CreateNewVideoData = useMutation(api.videoData.CreateNewVideoData)
     const GenerateAiVideoScript = async () => {
-        // Function to generate AI video script
+        if (!userInput) {
+            console.error('Please enter a topic');
+            return;
+        }
+
         setLoading(true);
-        const result = await axios.post('/api/generate-script', {
-            topic: userInput
-        });
-        console.log(result.data);
-        const RAWResult = (result?.data).replace('```json', '').replace('```', '');
-        const JSONResult = JSON.parse(RAWResult);
-        const resp = await CreateNewVideoData({
-            uid: userDetails?._id,
-            topic: userInput,
-            scriptVariant: JSONResult
-        });
-        console.log(resp);
-        //redirect user to new route
-        setLoading(false);
-    }
+        try {
+            const result = await axios.post('/api/generate-script', {
+                topic: userInput,
+                lang: language || 'English'
+            });
+
+            let jsonData;
+            try {
+                // Get the content from the response
+                const content = result.data;
+
+                // If content is already a string, clean it
+                const cleanContent = typeof content === 'string'
+                    ? content
+                        .replace(/```json/g, '')
+                        .replace(/```/g, '')
+                        .trim()
+                    : JSON.stringify(content);
+
+                // Try parsing with different approaches
+                try {
+                    jsonData = JSON.parse(cleanContent);
+                } catch (firstError) {
+                    console.error('First parse attempt failed:', firstError);
+                    // Try wrapping in array if it's not already an array
+                    try {
+                        if (!cleanContent.startsWith('[')) {
+                            jsonData = JSON.parse(`[${cleanContent}]`);
+                        } else {
+                            throw new Error('Invalid JSON format');
+                        }
+                    } catch (secondError) {
+                        console.error('Second parse attempt failed:', secondError);
+                        throw new Error('Could not parse AI response');
+                    }
+                }
+            } catch (parseError) {
+                console.error('JSON Parse Error:', parseError);
+                throw new Error('Failed to parse AI response');
+            }
+
+            // Validate JSON structure
+            if (!Array.isArray(jsonData)) {
+                jsonData = [jsonData];
+            }
+
+            // Create video data
+            const resp = await CreateNewVideoData({
+                uid: userDetails?._id,
+                topic: userInput,
+                lang: language,
+                scriptVariant: jsonData
+            });
+
+            console.log('Video data created:', resp);
+            console.log('Video data created:', result?.data);
+
+            // TODO: Add success notification and redirect
+
+        } catch (error) {
+            console.error('Error:', error);
+            // TODO: Add error notification
+        } finally {
+            setLoading(false);
+        }
+    };
+    const SUPPORTED_LANGUAGES = [
+        { value: 'english', label: 'English' },
+        { value: 'hindi', label: 'Hindi' },
+        { value: 'marathi', label: 'Marathi' },
+        { value: 'hinglish', label: 'Hinglish' }
+    ];
     return (
         <div className="min-h-full w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center p-8">
             <main className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
@@ -47,6 +109,22 @@ function CreateAdd() {
 
                         onChange={(e) => setUserInput(e.target.value)}
                     />
+                    <select
+                        value={language}
+                        onChange={(e) => setLanguage(e.target.value)}
+                        className="w-full max-w-md text-base sm:text-lg mt-5 px-5 py-4 rounded-2xl bg-gradient-to-r from-slate-900 via-blue-900 to-purple-900 text-white border-2 border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 shadow-lg cursor-pointer"
+                    >
+                        <option value="" disabled className="bg-slate-800">Select Language</option>
+                        {SUPPORTED_LANGUAGES.map((lang) => (
+                            <option
+                                key={lang.value}
+                                value={lang.value}
+                                className="bg-slate-800 text-white py-2"
+                            >
+                                {lang.label}
+                            </option>
+                        ))}
+                    </select>
                     <div className="flex justify-center">
                         <button
                             className="mt-6 px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-gradient-to-r from-blue-500 via-cyan-400 to-purple-500 text-white font-bold text-lg shadow-lg hover:scale-105 hover:bg-gradient-to-r hover:from-purple-500 hover:to-blue-500 transition-all duration-300 flex items-center gap-2"
