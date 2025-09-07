@@ -142,7 +142,7 @@ function Home() {
                                 title: "Smart Ads Creation",
                                 desc: "Instantly generate ad scripts, voice-overs, and visuals powered by AI.",
                                 icon: "💡",
-                                backIcon: "�",
+                                backIcon: "📈",
                                 backTitle: "Performance Optimization",
                                 backDesc: "Instantly generate ad scripts, voice-overs, and visuals powered by AI",
                                 gradient: "from-purple-500 to-pink-600"
