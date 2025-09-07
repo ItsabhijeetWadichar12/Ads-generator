@@ -1,11 +1,38 @@
 "use client"
 
 import Header from "@/components/Custom/Header";
-import { Sparkles } from "lucide-react";
-import { useState } from "react";
+import { UserDetailContext } from "@/context/UserDetailContext";
+import { api } from "@/convex/_generated/api";
+import axios from "axios";
+import { useMutation } from "convex/react";
+import { LoaderCircle, Sparkles } from "lucide-react";
+import Image from 'next/image'
+import React, { useContext, useState } from "react";
 
 function CreateAdd() {
     const [userInput, setUserInput] = useState();
+    const [loading, setLoading] = useState(false);
+    const{ userDetail,setUserDetail }=useContext(UserDetailContext);
+
+    const CreateNewVideoData = useMutation(api.videoData.CreateNewVideoData)
+    const GenerateAiVideoScript=async ()=>{
+        // Function to generate AI video script
+        setLoading(true);
+        const result = await axios.post('/api/generate-script', {
+            topic: userInput
+        });
+        console.log(result.data);
+        const RAWResult=(result?.data).replace('```json','').replace('```','');
+        const JSONResult=JSON.parse(RAWResult);
+        const resp=await CreateNewVideoData({
+            uid:userDetail?._id,
+            topic:userInput,
+            scriptVariant: JSONResult
+        });
+        console.log(resp);
+        //redirect user to new route
+        setLoading(false);
+    }
     return (
         <div className="min-h-full w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center p-8">
             <main className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
@@ -21,10 +48,9 @@ function CreateAdd() {
                     <div className="flex justify-center">
                         <button
                             className="mt-6 px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-gradient-to-r from-blue-500 via-cyan-400 to-purple-500 text-white font-bold text-lg shadow-lg hover:scale-105 hover:bg-gradient-to-r hover:from-purple-500 hover:to-blue-500 transition-all duration-300 flex items-center gap-2"
-                        >
-                            <Sparkles />
-                            Generate
-                        </button>
+                            onClick={GenerateAiVideoScript}
+                            disabled={loading}
+                        > {loading?<LoaderCircle className='animate-spin'/> : <Sparkles />} Generate</button>
                     </div>
                 </div>
             </main>
