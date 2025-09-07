@@ -47,10 +47,14 @@ export default function PricingPage() {
 	   <div className="relative w-full">
 		<div className="max-w-6xl mx-auto pt-16 pb-20 px-6 text-center">
 		 <div className="inline-block bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full px-8 py-3 shadow-xl mb-6 animate-pulse">
-		<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-3xl font-extrabold tracking-wide drop-shadow-2xl animate-pulse flex items-center justify-center gap-2">
-			<span className="animate-bounce">🚀</span>
-			<span className="animate-gradient">Unlock <span className="text-yellow-300">Your</span> <span className="text-pink-300">Ad</span> <span className="text-blue-300">Potential</span></span>
-			<span className="animate-bounce">✨</span>
+		<span className="relative flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-white/10 backdrop-blur-lg border-2 border-transparent bg-clip-padding shadow-2xl animate-pulse" style={{ borderImage: 'linear-gradient(90deg, #3B82F6, #A78BFA, #EC4899) 1' }}>
+			<span className="animate-bounce text-4xl">🚀</span>
+			<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-4xl font-extrabold tracking-wide drop-shadow-2xl animate-gradient">
+				Unlock <span className="text-yellow-300">Your</span> <span className="text-pink-300">Ad</span> <span className="text-blue-300">Potential</span>
+			</span>
+			<span className="animate-bounce text-4xl">✨</span>
+			<span className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-br from-green-400 to-blue-400 rounded-full blur-sm opacity-70 animate-pulse"></span>
+			<span className="absolute -bottom-2 -left-2 w-6 h-6 bg-gradient-to-br from-pink-400 to-purple-400 rounded-full blur-sm opacity-70 animate-pulse"></span>
 		</span>
 		 </div>
 		 <h1 className="text-6xl font-extrabold text-white mb-6 tracking-tight drop-shadow-lg">Pricing Plans</h1>
@@ -83,32 +87,38 @@ export default function PricingPage() {
 		</div>
 	   </div>
 	   <div className="max-w-6xl w-full mx-auto mt-0">
-		<div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-10">
-					{plans.map((plan) => (
-						<div
-							key={plan.name}
-							className={`relative rounded-3xl shadow-2xl p-10 flex flex-col items-center border-4 ${plan.popular ? 'border-yellow-400' : 'border-transparent'} bg-white/20 backdrop-blur-xl transition-transform hover:scale-105 hover:shadow-3xl duration-300`}
-						>
-							{plan.popular && (
-								<span className="absolute -top-5 left-1/2 -translate-x-1/2 bg-yellow-400 text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg">Most Popular</span>
-							)}
-							<div className={`bg-gradient-to-br ${plan.color} w-16 h-16 flex items-center justify-center rounded-full shadow-lg mb-6 text-3xl`}>{plan.icon}</div>
-							<h2 className="text-2xl font-bold text-white mb-2 drop-shadow text-center">{plan.name}</h2>
-							<div className="text-4xl font-extrabold text-white mb-4 drop-shadow">{plan.price}</div>
-							<ul className="text-white mb-8 space-y-3 w-full">
-								{plan.features.map((feature) => (
-									<li key={feature} className="flex items-center gap-2 text-base">
-										<span className="text-green-300">✔</span>
-										<span>{feature}</span>
-									</li>
-								))}
-							</ul>
-							<button className="mt-auto bg-gradient-to-r from-blue-400 to-purple-400 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:from-purple-400 hover:to-blue-400 transition text-lg">
-								{plan.price === "Contact Us" ? "Contact Sales" : "Choose Plan"}
-							</button>
-						</div>
-					))}
+		<div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
+			{plans.map((plan) => (
+				<div
+					key={plan.name}
+					className={`relative rounded-2xl shadow-xl p-8 flex flex-col items-center border border-gray-200 bg-white/80 backdrop-blur-lg transition-transform hover:-translate-y-2 hover:shadow-2xl duration-300 overflow-hidden`}
+					style={{ boxShadow: plan.popular ? '0 8px 32px 0 rgba(251,191,36,0.2)' : '0 8px 32px 0 rgba(59,130,246,0.15)' }}
+				>
+					<div className={`mb-4 flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br ${plan.color} shadow-lg`}>
+						<span className="text-3xl">{plan.icon}</span>
+					</div>
+					{plan.popular && (
+						<span className="absolute top-4 right-4 bg-yellow-400 text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg animate-pulse">Most Popular</span>
+					)}
+					<h2 className="text-xl font-bold text-gray-900 mb-2 text-center">{plan.name}</h2>
+					<div className="text-3xl font-extrabold text-blue-600 mb-4 flex items-center gap-2">
+						{plan.price}
+						{plan.popular && <span className="text-yellow-400 text-xl animate-pulse">★</span>}
+					</div>
+					<ul className="text-gray-700 mb-6 space-y-2 w-full">
+						{plan.features.map((feature) => (
+							<li key={feature} className="flex items-center gap-2 text-base">
+								<span className="text-green-400">✔</span>
+								<span>{feature}</span>
+							</li>
+						))}
+					</ul>
+					<button className="mt-auto bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold px-6 py-2 rounded-full shadow hover:from-purple-500 hover:to-blue-500 transition text-base">
+						{plan.price === "Contact Us" ? "Contact Sales" : "Choose Plan"}
+					</button>
 				</div>
+			))}
+		</div>
 				<section className="mt-16 text-center">
 					<h3 className="text-xl font-bold text-white mb-2">All plans include:</h3>
 					<div className="flex flex-wrap justify-center gap-6">
