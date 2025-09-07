@@ -1,13 +1,19 @@
 
 "use client"
-
+import { useRouter } from "next/navigation";
 import Header from "@/components/Custom/Header";
 import { Sparkles } from "lucide-react";
-import { useState } from "react";
+import { use, useState } from "react";
 
 
 function CreateAdd() {
     const [userInput, setUserInput] = useState();
+    const router = useRouter();
+
+
+
+
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col">
             {/* Main Content */}
