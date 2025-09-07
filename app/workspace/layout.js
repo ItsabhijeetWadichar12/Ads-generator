@@ -6,7 +6,6 @@ function Workspacelayout({ children }) {
     return (
         <div>
             <WorkspaceProvider>
-
                 {children}
             </WorkspaceProvider>
         </div>

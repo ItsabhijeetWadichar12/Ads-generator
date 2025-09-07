@@ -7,12 +7,14 @@ import { useUser } from "@clerk/nextjs";
 import { UserDetailContext } from "../../context/UserDetailContext";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "./_components/AppSidebar";
-
+import { useIsMobile } from "@/hooks/use-mobile"; // Import the hook
 
 function WorkspaceProvider({ children }) {
     const newUserMutation = useMutation(api.users.CreateNewUser);
     const { user } = useUser();
     const [userDetails, setUserDetails] = useState();
+    const isMobile = useIsMobile(); // Use the hook to detect mobile screens
+
     useEffect(() => {
         user && CreateNewUser();
     }, [user]);
@@ -31,8 +33,13 @@ function WorkspaceProvider({ children }) {
         <UserDetailContext.Provider value={{ userDetails, setUserDetails }}>
             <SidebarProvider>
                 <AppSidebar />
-                <div className="w-full">
-                    <SidebarTrigger />
+                <div className="w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
+
+                    {/* {isMobile && ( */}
+                    <SidebarTrigger
+                        className=" ml-3 mt-1 "
+                    />
+                    {/* )} */}
                     {children}
                 </div>
             </SidebarProvider>
