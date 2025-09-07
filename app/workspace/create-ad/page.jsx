@@ -2,22 +2,19 @@
 
 
 
-import { Sparkles } from "lucide-react";
-import { useState } from "react";
-import Header from "@/components/Custom/Header";
 import { UserDetailContext } from "@/context/UserDetailContext";
 import { api } from "@/convex/_generated/api";
 import axios from "axios";
 import { useMutation } from "convex/react";
 import { LoaderCircle, Sparkles } from "lucide-react";
-import Image from 'next/image'
+
 import React, { useContext, useState } from "react";
 
 
 function CreateAdd() {
     const [userInput, setUserInput] = useState();
     const [loading, setLoading] = useState(false);
-    const { userDetail, setUserDetail } = useContext(UserDetailContext);
+    const { userDetails } = useContext(UserDetailContext);
 
     const CreateNewVideoData = useMutation(api.videoData.CreateNewVideoData)
     const GenerateAiVideoScript = async () => {
@@ -30,7 +27,7 @@ function CreateAdd() {
         const RAWResult = (result?.data).replace('```json', '').replace('```', '');
         const JSONResult = JSON.parse(RAWResult);
         const resp = await CreateNewVideoData({
-            uid: userDetail?._id,
+            uid: userDetails?._id,
             topic: userInput,
             scriptVariant: JSONResult
         });

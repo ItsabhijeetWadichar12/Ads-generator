@@ -36,7 +36,6 @@ function WorkspaceProvider({ children }) {
 
                 <div className="w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
 
-
                     {/* {isMobile && ( */}
                     <SidebarTrigger
                         className=" ml-3 mt-1 "

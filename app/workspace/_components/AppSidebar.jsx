@@ -60,13 +60,13 @@ export function AppSidebar() {
         }
         return pathname.startsWith(path);
     }
-    
+
     return (
-        <Sidebar>
+        <Sidebar className="bg-gradient-to-b from-purple-300 via-purple-400 to-purple-300 animate-gradient">
             <SidebarHeader className="p-6">
                 <Link href="/" className="flex items-center gap-3 group">
                     <div className="relative overflow-hidden rounded-xl">
-                         <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 animate-gradient" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 animate-gradient" />
                         <Image
                             src="/logo.svg"
                             alt="logo"
@@ -129,7 +129,7 @@ export function AppSidebar() {
             <Separator className="bg-white/[0.1]" />
 
             <SidebarFooter className="p-4">
-                 <Link
+                <Link
                     href={SETTINGS_MENU_ITEM.path}
                     className={clsx(
                         "flex items-center gap-3 rounded-lg px-4 py-3 transition-all duration-300 group",
@@ -141,7 +141,7 @@ export function AppSidebar() {
                         }
                     )}
                 >
-                     <div className="flex items-center justify-center h-8 w-8 bg-slate-800 rounded-full text-white font-bold text-sm">
+                    <div className="flex items-center justify-center h-8 w-8 bg-slate-800 rounded-full text-white font-bold text-sm">
                         N
                     </div>
                     <span className="font-medium">{SETTINGS_MENU_ITEM.title}</span>
