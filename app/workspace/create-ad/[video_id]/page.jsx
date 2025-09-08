@@ -5,6 +5,7 @@ import Script from './_components/Script';
 import React, { useEffect } from 'react'
 import { useConvex } from 'convex/react';
 import { api } from '@/convex/_generated/api';
+import UploadFiles from './_components/UploadFiles';
 
 function CreateVideo() {
     const {video_id}= useParams();
@@ -31,11 +32,14 @@ function CreateVideo() {
         [field]:value}))
    }
   return (
-    <div className='p-6 md:p-8'>
-        <h2 className='font-bold text-2xl text-white'>Create Video Ad</h2>
+    <div className='p-6 md:p-10'>
+        <h2 className='font-extrabold text-3xl bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text'>Create Video Ad</h2>
         <div className='grid grid-cols-1 lg:grid-cols-3 mt-8 gap-12'>
-            <div className='lg:col-span-2'>
+            <div className='lg:col-span-2 flex flex-col gap-6'>
                <Script videoData={videoData} onHandleInputChange={onHandleInputChange}/>
+            
+                <UploadFiles videoData={videoData}/>
+            
             </div>
             <div className='text-white'>
                 Preview
