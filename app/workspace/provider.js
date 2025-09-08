@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation } from "convex/react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { api } from "../../convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
 import { UserDetailContext } from "../../context/UserDetailContext";
@@ -13,20 +13,28 @@ function WorkspaceProvider({ children }) {
     const newUserMutation = useMutation(api.users.CreateNewUser);
     const { user } = useUser();
     const [userDetails, setUserDetails] = useState();
+    const isUserCreated = useRef(false);
     const isMobile = useIsMobile(); // Use the hook to detect mobile screens
 
     useEffect(() => {
-        user && CreateNewUser();
+        if (user && !isUserCreated.current) {
+            CreateNewUser();
+            isUserCreated.current = true;
+        }
     }, [user]);
 
     const CreateNewUser = async () => {
-        const reslut = await newUserMutation({
-            name: user?.fullName,
-            email: user?.primaryEmailAddress?.emailAddress,
-            picture: user?.imageUrl,
-        });
-        console.log(reslut);
-        setUserDetails(reslut);
+        try {
+            const reslut = await newUserMutation({
+                name: user?.fullName,
+                email: user?.primaryEmailAddress?.emailAddress,
+                picture: user?.imageUrl,
+            });
+            console.log(reslut);
+            setUserDetails(reslut);
+        } catch (error) {
+            console.error("Error creating new user:", error);
+        }
     };
 
     return (
