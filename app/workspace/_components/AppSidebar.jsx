@@ -65,16 +65,13 @@ export function AppSidebar() {
         <Sidebar className="bg-gradient-to-b from-purple-300 via-purple-400 to-purple-300 animate-gradient">
             <SidebarHeader className="p-4">
                 <Link href="/" className="flex items-center gap-3 group">
-                    <div className="relative overflow-hidden rounded-xl">
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-gradient" />
                         <Image
-                            src="/logo.png"
+                            src="/logo.svg"
                             alt="logo"
                             width={40}
                             height={40}
-                            className="relative z-10 object-cover rounded-lg"
+                            className=" object-cover rounded-lg"
                         />
-                    </div>
                     <span className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 drop-shadow-sm">
                         PromoBOT
                     </span>
