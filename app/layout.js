@@ -13,6 +13,9 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning={true}>
+        <head>
+          <link rel="icon" href="/favicon1.ico" />
+        </head>
         <body className={outfit.className}>
           <Provider> {children}</Provider>
         </body>
