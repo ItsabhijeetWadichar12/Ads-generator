@@ -63,20 +63,20 @@ export function AppSidebar() {
 
     return (
         <Sidebar className="bg-gradient-to-b from-purple-300 via-purple-400 to-purple-300 animate-gradient">
-            <SidebarHeader className="p-6">
+            <SidebarHeader className="p-4">
                 <Link href="/" className="flex items-center gap-3 group">
                     <div className="relative overflow-hidden rounded-xl">
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 animate-gradient" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-gradient" />
                         <Image
-                            src="/logo.svg"
+                            src="/logo.png"
                             alt="logo"
                             width={40}
                             height={40}
-                            className="relative z-10 p-2 backdrop-blur-sm bg-black/20"
+                            className="relative z-10 object-cover rounded-lg"
                         />
                     </div>
-                    <span className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                        AI ADS
+                    <span className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 drop-shadow-sm">
+                        PromoBOT
                     </span>
                 </Link>
             </SidebarHeader>
@@ -106,11 +106,11 @@ export function AppSidebar() {
                                     href={menu.path}
                                     className={clsx(
                                         "flex items-center gap-3 rounded-lg px-4 py-3 transition-all duration-300 group",
-                                        "hover:bg-black/10", // Subtle hover for all items
+                                        "hover:bg-black/20 ", // Subtle hover for all items
                                         {
-                                            "bg-slate-900/50 shadow-inner": isActive(menu.path), // Darker, inset background for active item
+                                            "bg-slate-900/70 shadow-inner": isActive(menu.path), // Darker, inset background for active item
                                             "text-slate-300 hover:text-white": !isActive(menu.path), // Default text color
-                                            "text-purple-300 font-semibold": isActive(menu.path), // Active text color
+                                            "text-purple-300 font-semibold ": isActive(menu.path), // Active text color
                                         }
                                     )}
                                 >

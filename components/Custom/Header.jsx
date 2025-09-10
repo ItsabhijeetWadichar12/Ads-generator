@@ -1,4 +1,5 @@
 import { UserButton } from '@clerk/nextjs'
+import Image from 'next/image'
 import React from 'react'
 
 function Header() {
@@ -7,10 +8,17 @@ function Header() {
             <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                 {/* Logo */}
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-r from-cyan-400 to-blue-600 rounded-xl flex items-center justify-center">
-                        <span className="text-white font-bold text-xl">P</span>
+                    <div className="relative">
+                        <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg blur opacity-75" />
+                        <Image
+                            src="/logo.png"
+                            alt="logo"
+                            width={40}
+                            height={40}
+                            className="relative z-10 object-cover rounded-lg"
+                        />
                     </div>
-                    <span className="text-2xl font-black text-white tracking-tight">PromoBot </span>
+                    <span className="text-2xl font-black text-white tracking-tight">PromoBot</span>
                 </div>
 
                 {/* Navigation Links */}
@@ -35,7 +43,7 @@ function Header() {
                     <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-blue-600 rounded-xl flex items-center justify-center">
                         <span className="text-white font-bold text-lg">A</span>
                     </div>
-                    <span className="text-lg font-black text-white tracking-tight">AI Ads</span>
+                    <span className="text-lg font-black text-white tracking-tight">Ads</span>
                 </div>
                 <UserButton afterSignOutUrl="/" />
             </nav>
