@@ -7,9 +7,13 @@ import { useConvex } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import UploadFiles from './_components/UploadFiles';
 import GetAvatar from './_components/GetAvatar';
+
 import { Button } from '@/components/ui/button';
 import { Files, Sparkle } from 'lucide-react';
 import ImageKit from 'imagekit';
+
+import GetVoice from './_components/GetVoice';
+
 
 function CreateVideo() {
     const { video_id } = useParams();
@@ -90,8 +94,12 @@ function CreateVideo() {
 
                     <UploadFiles videoData={videoData} onHandleInputChange={onHandleInputChange} />
                     <GetAvatar videoData={videoData} onHandleInputChange={onHandleInputChange} />
+
                     <VoiceList videoData={videoData} onHandleInputChange={onHandleInputChange} />
                     <Button className={'mt-7 w-full'} onClick={GenerateVideo}> <Sparkle /> Generate </Button>
+
+                    <GetVoice videoData={videoData} onHandleInputChange={onHandleInputChange} />
+
                 </div>
                 <div className='text-white'>
                     Preview
