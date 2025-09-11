@@ -13,35 +13,61 @@ function CreateAdd() {
     const [userInput, setUserInput] = useState();
     const [loading, setLoading] = useState(false);
     const { userDetails } = useContext(UserDetailContext);
-    const router=useRouter();
+    const router = useRouter();
     const CreateNewVideoData = useMutation(api.videoData.CreateNewVideoData)
     const GenerateAiVideoScript = async () => {
-        // Function to generate AI video script
+        if (!userInput) {
+            console.error('Please enter a topic');
+            return;
+        }
+
         setLoading(true);
-        const result = await axios.post('/api/generate-script', {
-            topic: userInput
-        });
-        console.log(result.data);
-        const RAWResult = (result?.data).replace('```json', '').replace('```', '');
         try {
-            const JSONResult = JSON.parse(RAWResult);
-            const resp = await CreateNewVideoData({
-                uid: userDetails?._id,
-                topic: userInput,
-                scriptVariant: JSONResult
+            const result = await axios.post('/api/generate-script', {
+                topic: userInput
             });
-            console.log(resp);
-            setLoading(false);
-            //redirect user to new route
-            
-            router.push('/workspace/create-ad/'+ resp);
+
+            // Clean and parse the JSON response
+            let jsonData;
+            try {
+                const rawContent = result?.data;
+                // Remove markdown formatting and clean the string
+                const cleanContent = typeof rawContent === 'string'
+                    ? rawContent
+                        .replace(/```json\s*/g, '')
+                        .replace(/```\s*/g, '')
+                        .replace(/,(\s*})/g, '$1') // Remove trailing commas before closing braces
+                        .replace(/,(\s*])/g, '$1') // Remove trailing commas before closing brackets
+                        .trim()
+                    : JSON.stringify(rawContent);
+
+                jsonData = JSON.parse(cleanContent);
+
+                // Validate the structure
+                if (!Array.isArray(jsonData)) {
+                    jsonData = [jsonData];
+                }
+
+                // Create video data
+                const resp = await CreateNewVideoData({
+                    uid: userDetails?._id,
+                    topic: userInput,
+                    scriptVariant: jsonData
+                });
+
+                console.log('Video data created:', resp);
+                router.push('/workspace/create-ad/' + resp);
+
+            } catch (parseError) {
+                console.error('JSON Parse Error:', parseError);
+                throw new Error('Failed to parse AI response');
+            }
         } catch (error) {
-            console.error("Error parsing JSON:", error);
-            console.error("Problematic string:", RAWResult);
+            console.error('Error:', error);
+        } finally {
             setLoading(false);
         }
-        
-    }
+    };
     return (
         <div className="min-h-full w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center p-8">
             <main className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
