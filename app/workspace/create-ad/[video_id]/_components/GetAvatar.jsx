@@ -45,7 +45,10 @@ function GetAvatar({ videoData, onHandleInputChange }) {
                                 <div
                                     key={index}
                                     onClick={() => onHandleInputChange('avatar', avatar)}
-                                    className={`${videoData?.avatar?._id == avatar?._id && 'border border-primary'} p-1 rounded-lg`}
+                                    className={`group cursor-pointer p-2 rounded-lg transition-all duration-300 hover:scale-105 ${videoData?.avatar?._id === avatar?._id
+                                            ? 'border-2 border-blue-500 bg-blue-900/20'
+                                            : 'border border-transparent hover:border-blue-500/50'
+                                        }`}
                                 >
                                     <Image
                                         src={avatar.thumbnailUrl}

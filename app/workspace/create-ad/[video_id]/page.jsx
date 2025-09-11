@@ -7,6 +7,7 @@ import { useConvex } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import UploadFiles from './_components/UploadFiles';
 import GetAvatar from './_components/GetAvatar';
+import GetVoice from './_components/GetVoice';
 
 function CreateVideo() {
     const { video_id } = useParams();
@@ -41,7 +42,8 @@ function CreateVideo() {
                     <Script videoData={videoData} onHandleInputChange={onHandleInputChange} />
 
                     <UploadFiles videoData={videoData} onHandleInputChange={onHandleInputChange} />
-                    <GetAvatar />
+                    <GetAvatar videoData={videoData} onHandleInputChange={onHandleInputChange} />
+                    <GetVoice videoData={videoData} onHandleInputChange={onHandleInputChange} />
 
                 </div>
                 <div className='text-white'>
