@@ -2,7 +2,7 @@ import { FilePlus2, ImageUp, X } from 'lucide-react'
 import Image from 'next/image';
 import React, { useState } from 'react'
 
-function UploadFiles({ videoData }) {
+function UploadFiles({ videoData,onHandleInputChange}) {
     const [files, setFiles] = useState([]);
 
     const handleFileChange = (event) => {
@@ -14,6 +14,11 @@ function UploadFiles({ videoData }) {
         const uploadedFiles=files.filter((_, index) => index !== indexToRemove);
         setFiles(uploadedFiles);
       }
+
+       useEffect(() => {
+        files&&onHandleInputChange('rawFiles', files)
+    }, [files])
+
   return (
     <div className='p-6 shadow-lg rounded-2xl bg-slate-800/70 text-white backdrop-blur-lg border border-slate-700'>
       <h2 className='font-bold text-xl flex items-center gap-3'>
