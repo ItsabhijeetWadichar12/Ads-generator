@@ -10,60 +10,98 @@ import React, { useContext, useState } from "react";
 
 
 function CreateAdd() {
-    const [userInput, setUserInput] = useState();
+    const [userInput, setUserInput] = useState('');
     const [loading, setLoading] = useState(false);
     const { userDetails } = useContext(UserDetailContext);
     const router = useRouter();
     const CreateNewVideoData = useMutation(api.videoData.CreateNewVideoData)
+    
     const GenerateAiVideoScript = async () => {
-        if (!userInput) {
-            console.error('Please enter a topic');
+        if (!userInput?.trim()) {
+            alert('Please enter a topic');
             return;
         }
 
         setLoading(true);
         try {
             const result = await axios.post('/api/generate-script', {
-                topic: userInput
+                topic: userInput.trim()
             });
 
             // Clean and parse the JSON response
             let jsonData;
             try {
                 const rawContent = result?.data;
-                // Remove markdown formatting and clean the string
-                const cleanContent = typeof rawContent === 'string'
-                    ? rawContent
-                        .replace(/```json\s*/g, '')
-                        .replace(/```\s*/g, '')
+                console.log('Raw content:', rawContent);
+                
+                // Handle different response formats
+                if (!rawContent) {
+                    throw new Error('Empty response from API');
+                }
+
+                let cleanContent;
+                if (typeof rawContent === 'object' && rawContent !== null) {
+                    jsonData = rawContent;
+                } else if (typeof rawContent === 'string') {
+                    // Remove markdown formatting and clean the string
+                    cleanContent = rawContent
+                        .replace(/```json\s*/gi, '')
+                        .replace(/```\s*/gi, '')
                         .replace(/,(\s*})/g, '$1') // Remove trailing commas before closing braces
                         .replace(/,(\s*])/g, '$1') // Remove trailing commas before closing brackets
-                        .trim()
-                    : JSON.stringify(rawContent);
+                        .replace(/(\w+):/g, '"$1":') // Add quotes around property names
+                        .trim();
 
+<<<<<<< HEAD
+                    if (!cleanContent) {
+                        throw new Error('Empty content after cleaning');
+                    }
+
+                    jsonData = JSON.parse(cleanContent);
+                } else {
+                    throw new Error('Invalid response format');
+                }
+=======
                 jsonData = JSON?.parse(cleanContent);
+>>>>>>> dc0a2e892391f90700bc1fb3e3256f9ae3c37ca2
 
                 // Validate the structure
+                if (!jsonData) {
+                    throw new Error('No data received');
+                }
+
                 if (!Array.isArray(jsonData)) {
                     jsonData = [jsonData];
+                }
+
+                // Validate that we have valid data
+                if (jsonData.length === 0) {
+                    throw new Error('Empty data array');
                 }
 
                 // Create video data
                 const resp = await CreateNewVideoData({
                     uid: userDetails?._id,
-                    topic: userInput,
+                    topic: userInput.trim(),
                     scriptVariant: jsonData
                 });
 
                 console.log('Video data created:', resp);
-                router.push('/workspace/create-ad/' + resp);
+                
+                if (resp) {
+                    router.push('/workspace/create-ad/' + resp);
+                } else {
+                    throw new Error('Failed to create video data');
+                }
 
             } catch (parseError) {
                 console.error('JSON Parse Error:', parseError);
-                throw new Error('Failed to parse AI response');
+                console.error('Raw content that failed:', result?.data);
+                alert('Failed to process AI response. Please try again with a different topic.');
             }
         } catch (error) {
             console.error('Error:', error);
+            alert('Something went wrong. Please check your internet connection and try again.');
         } finally {
             setLoading(false);
         }
