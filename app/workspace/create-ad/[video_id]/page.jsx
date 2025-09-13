@@ -7,14 +7,28 @@ import { useConvex } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import UploadFiles from './_components/UploadFiles';
 import GetAvatar from './_components/GetAvatar';
+
+import { Button } from '@/components/ui/button';
+import { Files, Sparkle } from 'lucide-react';
+import ImageKit from 'imagekit';
+
 import GetVoice from './_components/GetVoice';
+import axios from 'axios';
+
 
 function CreateVideo() {
     const { video_id } = useParams();
     const [videoData, setVideoData] = useState();
+    const [isGenerateButtonClick, setIsGenerateButtonClick] = useState(false);
     // const VideoData=useQuery(api.videoData.GetVideoDataById,{
     //     vid:video_id
     // });
+
+    const imageKit = new ImageKit({
+        publicKey: process.env.NEXT_PUBLIC_PUBLIC_KEY,
+        privateKey: process.env.NEXT_PUBLIC_PRIVATE_KEY,
+        urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_URL
+    })
     const convex = useConvex();
 
     useEffect(() => {
@@ -33,7 +47,51 @@ function CreateVideo() {
             ...prev,
             [field]: value
         }))
+        console.log(videoData);
     }
+
+    const GenerateVideo = async () => {
+        try {
+            setIsGenerateButtonClick(true);
+            const rawFiles = videoData?.rawFiles;
+            if (!rawFiles?.length) {
+                console.error('No files to upload');
+                return;
+            }
+
+            let uploadedFiles = [];
+            for (const file of rawFiles) {
+                try {
+                    const imageRef = await imageKit.upload({
+                        file: file,
+                        fileName: `${Date.now()}-${file.name}`, // Fixed date usage
+                        folder: "/ads-images",
+                        isPublished: true
+                    });
+                    console.log('Uploaded image:', imageRef.url);
+                    uploadedFiles.push(imageRef.url);
+                } catch (uploadError) {
+                    console.error('Error uploading file:', uploadError);
+                }
+            }
+
+            onHandleInputChange('assets', uploadedFiles);
+            // TODO: generate voice + generate avatar
+
+            const result = await axios.post('/api/create-voice', {
+                script: videoData?.script,
+                voiceId: videoData?.voice?.voice_id
+            });
+            console.log('Voice generation result:', result?.data.audioUrl);
+            onHandleInputChange('audio', result?.data?.audioUrl);
+
+        } catch (error) {
+            console.error('Generate video error:', error);
+        } finally {
+            setIsGenerateButtonClick(false);
+        }
+    };
+
     return (
         <div className='p-6 md:p-10'>
             <h2 className='font-extrabold text-3xl bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text'>Create Video Ad</h2>
@@ -43,7 +101,20 @@ function CreateVideo() {
 
                     <UploadFiles videoData={videoData} onHandleInputChange={onHandleInputChange} />
                     <GetAvatar videoData={videoData} onHandleInputChange={onHandleInputChange} />
+
                     <GetVoice videoData={videoData} onHandleInputChange={onHandleInputChange} />
+                    <Button
+                        className={'mt-7 w-full'}
+                        onClick={GenerateVideo}
+                        disabled={isGenerateButtonClick}
+                    >
+                        {isGenerateButtonClick ? (
+                            <>Processing...</>
+                        ) : (
+                            <><Sparkle /> Generate</>
+                        )}
+                    </Button>
+
 
                 </div>
                 <div className='text-white'>
