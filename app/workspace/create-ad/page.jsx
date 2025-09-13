@@ -52,7 +52,6 @@ function CreateAdd() {
                         .replace(/(\w+):/g, '"$1":') // Add quotes around property names
                         .trim();
 
-<<<<<<< HEAD
                     if (!cleanContent) {
                         throw new Error('Empty content after cleaning');
                     }
@@ -61,9 +60,6 @@ function CreateAdd() {
                 } else {
                     throw new Error('Invalid response format');
                 }
-=======
-                jsonData = JSON?.parse(cleanContent);
->>>>>>> dc0a2e892391f90700bc1fb3e3256f9ae3c37ca2
 
                 // Validate the structure
                 if (!jsonData) {
