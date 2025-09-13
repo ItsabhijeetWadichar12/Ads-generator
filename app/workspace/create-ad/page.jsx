@@ -41,7 +41,7 @@ function CreateAdd() {
                         .trim()
                     : JSON.stringify(rawContent);
 
-                jsonData = JSON.parse(cleanContent);
+                jsonData = JSON?.parse(cleanContent);
 
                 // Validate the structure
                 if (!Array.isArray(jsonData)) {
