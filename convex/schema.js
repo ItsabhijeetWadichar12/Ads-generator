@@ -19,6 +19,7 @@ export default defineSchema({
         uid: v.id('users'),
         voiceUrl: v.optional(v.any()),
         avatarUrl: v.optional(v.any()),
-        videoUrl: v.optional(v.any())
+        videoUrl: v.optional(v.any()),
+        status: v.optional(v.number())
     })
 })
