@@ -14,7 +14,7 @@ export async function POST(req) {
         "elements": [
         {
             "type": "image",
-            "url": "https://ik.imagekit.io/7eefh1kim/transparent_bg.png?updatedAt=1757842268814",
+            "url": "https://ik.imagekit.io/7eefh1kim/transparent_bg.png?updatedAt=1757843265798",
             "width": 780,
             "height": 438,
             "scale_x": 1,
