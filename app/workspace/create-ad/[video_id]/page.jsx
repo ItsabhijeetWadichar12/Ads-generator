@@ -25,19 +25,11 @@ function CreateVideo() {
     //     vid:video_id
     // });
 
-<<<<<<< HEAD
-    const imageKit=new ImageKit({
-        publicKey:process.env.IMAGEKIT_PUBLIC_KEY,
-        privateKey:process.env.IMAGEKIT_PRIVATE_KEY,
-        urlEndpoint:process.env.NEXT_PUBLIC_IMAGEKIT_URL
-    });
-=======
     const imageKit = new ImageKit({
         publicKey: process.env.NEXT_PUBLIC_PUBLIC_KEY,
         privateKey: process.env.NEXT_PUBLIC_PRIVATE_KEY,
         urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_URL
     })
->>>>>>> dc0a2e892391f90700bc1fb3e3256f9ae3c37ca2
     const convex = useConvex();
 
     useEffect(() => {
@@ -59,44 +51,6 @@ function CreateVideo() {
         console.log(videoData);
     }
 
-<<<<<<< HEAD
-    const GenerateVideo=async ()=>{
-        //upload the Image
-        const rawImages=videoData.rawFiles;
-        let uploadedFiles=[];
-        // rawFiles.forEach(async(file) => {
-        //     const imageRef=await imageKit.upload({
-        //         file:file,
-        //         fileName:Date.now().toString()+".png",
-        //         isPublished:true
-        //     }) 
-        //     console.log(imageRef.url);
-        //     uploadedFiles.push(imageRef.url);
-            
-        // });
-
-        const uploadPromises=rawFiles.map(async(file)=>
-        await imageKit.upload({
-               file:file,
-                fileName:Date.now().toString()+".png",
-                isPublished:true
-         }) 
-    );
-
-        try{
-            const uploadedFilesPromise=await Promise.all(uploadPromises);
-            const uploadedFiles=uploadedFilesPromise.map((imageRef) => imageRef.url);
-            console.log(uploadedFiles);
-            onHandleInputChange('assests', uploadedFiles);
-        }catch(e){
-            console.error("Error", e);
-        }
-        
-    //generate voice = generate avatar
-    }
-
-   
-=======
     const GenerateVideo = async () => {
         try {
             setIsGenerateButtonClick(true);
@@ -130,8 +84,11 @@ function CreateVideo() {
                 voiceId: videoData?.voice?.voice_id
             });
             console.log('Voice generation result:', result?.data.audioUrl);
+
             onHandleInputChange('audio', result?.data?.audioUrl);
 
+            
+            
         } catch (error) {
             console.error('Generate video error:', error);
         } finally {
@@ -139,7 +96,6 @@ function CreateVideo() {
         }
     };
 
->>>>>>> dc0a2e892391f90700bc1fb3e3256f9ae3c37ca2
     return (
         <div className='p-6 md:p-10'>
             <h2 className='font-extrabold text-3xl bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text'>Create Video Ad</h2>
@@ -150,12 +106,6 @@ function CreateVideo() {
                     <UploadFiles videoData={videoData} onHandleInputChange={onHandleInputChange} />
                     <GetAvatar videoData={videoData} onHandleInputChange={onHandleInputChange} />
 
-<<<<<<< HEAD
-                    <VoiceList videoData={videoData} onHandleInputChange={onHandleInputChange} />
-                    <Button className={'mt-7 w-full'} onClick={GenerateVideo}> <Sparkle /> Generate </Button>
-
-=======
->>>>>>> dc0a2e892391f90700bc1fb3e3256f9ae3c37ca2
                     <GetVoice videoData={videoData} onHandleInputChange={onHandleInputChange} />
                     <Button
                         className={'mt-7 w-full'}
