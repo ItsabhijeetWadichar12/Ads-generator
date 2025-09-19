@@ -22,25 +22,20 @@ function VoiceList({ videoData, onHandleInputChange }) {
             const response = await axios.get('/api/get-voice-list');
 
             if (response?.data) {
-                // Add unique IDs to each voice for reliable tracking
-                const voicesWithIds = response.data.map((voice, index) => ({
-                    ...voice,
-                    uniqueId: voice.id || voice._id || `voice-${index}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
-                }));
-
-                // Filter for Indian voices if language info is available
-                const indianVoices = voicesWithIds.filter(voice =>
-                    !voice.language || // Keep voices without language info
-                    INDIAN_LANGUAGES.some(lang =>
+                const indianVoices = response.data
+                    .filter(voice => INDIAN_LANGUAGES.some(lang =>
                         voice.language?.includes(lang)
-                    )
-                );
+                    ))
+                    .map((voice, index) => ({
+                        ...voice,
+                        uniqueId: voice.id || `voice-${index}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+                    }));
 
-                console.log('Voices loaded:', indianVoices);
+                console.log('Indian voices:', indianVoices);
                 setVoiceList(indianVoices);
 
                 if (indianVoices.length === 0) {
-                    setError('No voices available');
+                    setError('No Indian language voices available');
                 }
             } else {
                 setError('No voices available');
@@ -104,7 +99,7 @@ function VoiceList({ videoData, onHandleInputChange }) {
 
     // Format language display
     const formatLanguage = (language) => {
-        return language?.replace(' (India)', '') || 'Unknown Language';
+        return language?.replace(' (India)', '') || '';
     };
 
     // Format voice name
@@ -113,16 +108,16 @@ function VoiceList({ videoData, onHandleInputChange }) {
     };
 
     return (
-        <div className='p-5 shadow rounded-xl mt-6 bg-slate-800/70 text-white backdrop-blur-lg border border-slate-700'>
+        <div className='p-5 mt-3 shadow rounded-xl bg-slate-800/70 text-white backdrop-blur-lg border border-slate-700'>
             <div className="flex items-center justify-between mb-3">
-                <h2 className='font-bold text-lg flex items-center gap-3'>
+                <h2 className='font-bold text-xl flex items-center gap-3'>
                     <Mic className='p-2 bg-gradient-to-r from-red-400 to-blue-500 text-white h-10 w-10 rounded-lg shadow-md' />
-                    Select Voice
+                    Select Indian Voice
                 </h2>
                 {isPlaying && (
                     <button
                         onClick={handleStopAll}
-                        className="px-3 py-1 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors flex items-center gap-2"
+                        className="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors flex items-center gap-2"
                     >
                         <Pause className="w-4 h-4" />
                         Stop Preview
@@ -131,12 +126,11 @@ function VoiceList({ videoData, onHandleInputChange }) {
             </div>
             <hr className='my-3' />
             <div>
-                <label className="text-gray-300">Select Voice for your video ad</label>
-                <div className="mt-4 max-h-[300px] overflow-y-auto pr-2">
-                    <div className="grid grid-cols-2 gap-4">
+                <div className="mt-4 max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-blue-600 scrollbar-track-slate-700/30 scrollbar-thumb-rounded-full scrollbar-track-rounded-full pr-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                         {loading ? (
                             <div className="col-span-full text-center py-4 text-slate-400">
-                                Loading voices...
+                                Loading Indian voices...
                             </div>
                         ) : error ? (
                             <div className="col-span-full text-center py-4 text-red-400">
@@ -144,51 +138,48 @@ function VoiceList({ videoData, onHandleInputChange }) {
                             </div>
                         ) : voiceList.length === 0 ? (
                             <div className="col-span-full text-center py-4 text-slate-400">
-                                No voices available
+                                No Indian voices available
                             </div>
                         ) : (
                             voiceList.map((voice) => (
                                 <div
                                     key={voice.uniqueId}
                                     onClick={() => onHandleInputChange('voice', voice)}
-                                    className={`group cursor-pointer p-4 rounded-lg transition-all duration-300 hover:scale-105 ${videoData?.voice?._id === voice._id || videoData?.voice?.uniqueId === voice.uniqueId
-                                            ? 'border-2 border-blue-500 bg-blue-900/20'
-                                            : 'border border-slate-700 hover:border-blue-500/50'
+                                    className={`group cursor-pointer p-4 rounded-lg transition-all duration-300 hover:scale-105 ${videoData?.voice?.uniqueId === voice.uniqueId
+                                        ? 'border-2 border-blue-500 bg-blue-900/20'
+                                        : 'border border-slate-700 hover:border-blue-500/50'
                                         }`}
                                 >
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex gap-3 items-center">
-                                            <button
-                                                onClick={(e) => handlePlayPreview(voice, e)}
-                                                className="relative w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center"
-                                                disabled={!voice.preview}
-                                            >
-                                                {playingVoiceId === voice.uniqueId ? (
-                                                    isPlaying ? (
-                                                        <Pause className="w-4 h-4 text-white" />
+                                    <div className="flex flex-col items-center gap-2">
+                                        <div className="relative">
+                                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                                                <button
+                                                    onClick={(e) => handlePlayPreview(voice, e)}
+                                                    className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                                                    disabled={!voice.preview}
+                                                >
+                                                    {playingVoiceId === voice.uniqueId ? (
+                                                        isPlaying ? (
+                                                            <Pause className="w-6 h-6 text-white" />
+                                                        ) : (
+                                                            <Play className="w-6 h-6 text-white" />
+                                                        )
                                                     ) : (
-                                                        <Play className="w-4 h-4 text-white" />
-                                                    )
-                                                ) : (
-                                                    <Play className="w-4 h-4 text-white" />
-                                                )}
-                                            </button>
-                                            <div>
-                                                <h3 className="font-medium text-sm">
-                                                    {formatVoiceName(voice.name)}
-                                                </h3>
-                                                <p className="text-xs text-slate-400">
-                                                    {formatLanguage(voice.language || voice.accent)}
-                                                    {voice.description ? ` (${voice.description})` : ''}
-                                                </p>
+                                                        <Play className="w-6 h-6 text-white" />
+                                                    )}
+                                                </button>
                                             </div>
                                         </div>
-                                        <div className="flex-shrink-0">
-                                            {voice.gender === "Male" ? (
-                                                <Mars className="text-blue-400 h-4 w-4" />
-                                            ) : (
-                                                <Venus className="text-pink-400 h-4 w-4" />
-                                            )}
+                                        <div className="text-center">
+                                            <h3 className="font-medium text-sm">
+                                                {formatVoiceName(voice.name)}
+                                            </h3>
+                                            <p className="text-xs text-slate-400">
+                                                {formatLanguage(voice.language)}
+                                            </p>
+                                            <span className='text-sm items-center'>
+                                                {voice.gender === "Male" ? <Mars /> : <Venus />}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>

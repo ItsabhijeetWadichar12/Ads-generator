@@ -12,25 +12,37 @@ import React, { useContext, useEffect, useState } from 'react'
 function VideoList() {
 
     const [videoList, setVideoList] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const { userDetail } = useContext(UserDetailContext);
     const convex = useConvex();
 
     useEffect(() => {
-        userDetail && GetUserVideoList()
-    }, [userDetail])
+        if (userDetail) {
+            GetUserVideoList();
+        }
+    }, [userDetail]);
 
     /**
      * Get User Video List
      */
     const GetUserVideoList = async () => {
-        const result = await convex.query(api.videoData.GetUsersVideo, {
-            uid: userDetail?._id
-        })
-        console.log(result);
-        setVideoList(result);
+        setIsLoading(true);
+        try {
+            const result = await convex.query(api.videoData.GetUsersVideo, {
+                uid: userDetail?._id
+            });
+            console.log(result);
+            setVideoList(result || []);
 
-        const isPendingVideo = result?.find((item) => item.status == 1);
-        isPendingVideo && GetPendingVideoStatus(isPendingVideo);
+            const isPendingVideo = result?.find((item) => item.status == 1);
+            if (isPendingVideo) {
+                GetPendingVideoStatus(isPendingVideo);
+            }
+        } catch (error) {
+            console.error("Error fetching videos:", error);
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     const GetPendingVideoStatus = (pendingVideo) => {
@@ -47,7 +59,7 @@ function VideoList() {
     }
 
     return (
-        <div>
+        <div className='ml-5'>
             {videoList?.length == 0 ?
                 <div className='flex items-center justify-center mt-10 flex-col'>
                     <Image src={'/advertisement.png'} alt='ads'
@@ -60,7 +72,7 @@ function VideoList() {
                     </Link>
                 </div>
                 :
-                <div className='flex gap-7 flex-wrap mt-10'>
+                <div className='flex gap-7 flex-wrap mt-10 '>
                     {videoList?.map((video, index) => video?.status && (
                         <Link key={index} className='relative cursor-pointer'
                             href={'/workspace/view-ads/' + video?._id}
@@ -74,7 +86,7 @@ function VideoList() {
                                     <LoaderCircle className='animate-spin' />
                                     <h2 className='text-lg'>Generating Avatar...</h2>
                                 </div> :
-                                <Image src={video?.assets[0]} alt={video?.topic}
+                                <Image src={video?.assets && video?.assets.length > 0 ? video?.assets[0] : '/advertisement.png'} alt={video?.topic || 'Video Ad'}
                                     width={300}
                                     height={500}
                                     className='w-[300px] h-[450px] object-cover rounded-lg'

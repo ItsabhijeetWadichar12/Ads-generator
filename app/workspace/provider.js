@@ -29,8 +29,13 @@ function WorkspaceProvider({ children }) {
         <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
             <SidebarProvider>
                 <AppSidebar />
-                <div className='w-full p-10'>
-                    <SidebarTrigger />
+                <div className="w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
+
+                    {/* {isMobile && ( */}
+                    <SidebarTrigger
+                        className=" ml-3 mt-1 "
+                    />
+                    {/* )} */}
                     {children}
                 </div>
             </SidebarProvider>

@@ -155,22 +155,28 @@ function CreateVideo() {
     }, [videoData?.voiceUrl])
 
     return (
-        <div>
-            <h2 className='font-bold text-2xl'>Create Video Ad</h2>
-            <div className='grid grid-cols-1 md:grid-cols-3 mt-8'>
-                <div className='md:col-span-2'>
+        <div className='p-6 md:p-10'>
+            <h2 className='font-extrabold text-3xl bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text'>Create Video Ad</h2>
+            <div className='grid grid-cols-1 lg:grid-cols-3 mt-8 gap-12'>
+                <div className='lg:col-span-2 flex flex-col gap-6'>
                     <Script videoData={videoData} onHandleInputChange={onHandleInputChange} />
                     <UploadFiles videoData={videoData} onHandleInputChange={onHandleInputChange} />
                     <AvatarList videoData={videoData} onHandleInputChange={onHandleInputChange} />
                     <VoiceList videoData={videoData} onHandleInputChange={onHandleInputChange} />
-                    <Button className={'mt-5 w-full'}
-                        onClick={GenerateVideo} disabled={loading}>
-                        {loading ? <LoaderCircle className='animate-spin' /> : <Sparkles />}
-                        Generate </Button>
+                    <Button
+                        className={'mt-7 w-full'}
+                        onClick={GenerateVideo}
+                        disabled={loading}
+                    >
+                        {loading ? (
+                            <><LoaderCircle className='animate-spin mr-2' /> Processing...</>
+                        ) : (
+                            <><Sparkles className="mr-2" /> Generate</>
+                        )}
+                    </Button>
                 </div>
-                <div>
+                <div className='text-white'>
                     Preview
-
                 </div>
             </div>
         </div>
