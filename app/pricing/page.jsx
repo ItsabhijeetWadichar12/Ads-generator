@@ -142,3 +142,6 @@ function FeatureBadge({ icon, text }) {
 		</span>
 	);
 }
+
+
+//pricing page complete
