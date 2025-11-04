@@ -1,5 +1,7 @@
 import { SignIn } from '@clerk/nextjs'
 
+
+//auth  complete sign-in page
 export default function Page() {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
